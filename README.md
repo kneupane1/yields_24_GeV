@@ -11,7 +11,7 @@ A c++ example can be found in the cpp folder.
 To build:
 
 ```bash
-git clone https://github.com/tylern4/clas12_analysis.git
+git clone https://github.com/kneupane1/yields_24_GeV.git
 mkdir -p clas12_analysis/build
 cd clas12_analysis/build
 cmake ..
