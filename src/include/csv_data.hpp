@@ -11,12 +11,6 @@ struct csv_data {
   float w_mc;
   float q2_mc;
 
-  float w_had;
-  float w_diff;
-  float w_had_corr;
-  float w_diff_corr;
-  float w_after;
-
   float elec_mom_rec;
   float elec_theta_rec;
   float elec_phi_rec;
@@ -40,7 +34,6 @@ struct csv_data {
   float gen_prot_phi;
 
   float weight_gen;
-
   float weight_rec;
 
   int status_Elec;
@@ -72,9 +65,9 @@ struct csv_data {
     os << data.elec_mom_rec << ",";
     os << data.elec_theta_rec << ",";
     os << data.elec_phi_rec << ",";
-
+    os << std::setprecision(15);
     os << data.weight_rec<< ",";
-
+    os << std::setprecision(5);
     os << data.status_Elec << ",";
     os << data.status_Pim << ",";
     os << data.status_Pip << ",";
