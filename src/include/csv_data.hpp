@@ -65,7 +65,7 @@ struct csv_data {
     os << data.elec_mom_rec << ",";
     os << data.elec_theta_rec << ",";
     os << data.elec_phi_rec << ",";
-    os << std::setprecision(15);
+    os << std::setprecision(10);
     os << data.weight_rec<< ",";
     os << std::setprecision(5);
     os << data.status_Elec << ",";
