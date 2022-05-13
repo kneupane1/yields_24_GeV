@@ -19,6 +19,7 @@ bool Cuts::ElectronCuts() {
 
   _elec &= (_data->charge(0) == NEGATIVE);
   _elec &= (_data->pid(0) == ELECTRON);
+  _elec &= (2000 <= abs(_data->status(0)));
 
   return _elec;
 }
