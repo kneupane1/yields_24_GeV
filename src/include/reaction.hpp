@@ -1,7 +1,3 @@
-/************************************************************************/
-/*  Created by Nick Tyler*/
-/*	University Of South Carolina*/
-/************************************************************************/
 
 #ifndef REACTION_H_GUARD
 #define REACTION_H_GUARD
@@ -58,15 +54,8 @@ class Reaction {
   float _W = NAN;
   float _Q2 = NAN;
 
-  float _W_after = NAN;
-
-  float _P_elec = NAN;
-
+  double _elec_mom = NAN;
   float _theta_e = NAN;
-  float _rec_pim_mom = NAN;
-  float _rec_pim_theta = NAN;
-  float _rec_pim_phi = NAN;
-
   float _elec_phi = NAN;
 
   float _prot_status = NAN;
@@ -76,7 +65,6 @@ class Reaction {
   void SetElec();
 
   
-  double _elec_mom = NAN;
 
 
  public:
@@ -89,12 +77,9 @@ class Reaction {
   }
   // Check lists when you swich from mc to exp or vice-versa
   // 1. inline weight function above
-  // 2. gamma, _w, _q2 and dpp function in electron four vector set up at reaction.cpp because of momentum corrections
-  // for elec included only for exp data
-  // 3. turn on the SetMomCorrElec() function on clas12_yields.hpp
-  // 4. clas12_yields: auto data = std::make_shared<Branches12>(_chain, true);  turn off true for data
-  // 5. from if (data->mc_npart() < 1) to all particle set up im mc events.
-  // 6. all mc bank related (generated) output parameters will not work in exp data
+  // 2. clas12_yields: auto data = std::make_shared<Branches12>(_chain, true);  turn off true for data
+  // 3. from if (data->mc_npart() < 1) to all particle set up im mc events.
+  // 4. all mc bank related (generated) output parameters will not work in exp data
 
   // momentum correction
   void SetMomCorrElec();
@@ -142,16 +127,8 @@ class Reaction {
   float MM2_mPip();
   float MM2_mProt();
 
-  float w_hadron();
-  float w_difference();
-  float w_hadron_corr();
-  float w_difference_corr();
-
   inline float W() { return _W; }
   inline float Q2() { return _Q2; }
-
-  inline float W_after() { return _W_after; }
-
 
   inline short sec() { return _data->dc_sec(0); }
   inline int det() { return abs(_data->status(0) / 1000); }
@@ -232,18 +209,6 @@ class MCReaction : public Reaction {
 
   void CalcMissMass_mc();
 
-  float Diff_elec_x_mu_theta_mc();
-  float Diff_elec_x_mu_phi_mc();
-  float Diff_beam_x_mu_theta_mc();
-  float Diff_beam_x_mu_phi_mc();
-  float MM2_exclusive_mc();
-  float Energy_excl_mc();
-  float x_mu_momentum_mc();
-  float x_mu_theta_lab_mc();
-  float x_mu_Phi_lab_mc();
-
-  std::string CsvHeader();
-  std::string ReacToCsv();
 };
 
 #endif

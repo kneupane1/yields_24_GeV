@@ -117,13 +117,8 @@ void Reaction::CalcMissMass() {
     _MM = mm->M();
     _MM2 = mm->M2();
 
-  // //   // _rec_pim_mom = mm->P();
-  // //   // _rec_pim_theta = mm->Theta() * 180 / PI;
 
-  // //   // if (mm->Phi() >= 0)
-  // //   //   _rec_pim_phi = (mm->Phi() * 180 / PI);
-  // //   // else if (mm->Phi() < 0)
-  // //   //   _rec_pim_phi = ((mm->Phi() + 2 * PI) * 180 / PI);
+
   }
   if (TwoPion_exclusive()) {
     // *mm -= *_prot;
@@ -194,7 +189,7 @@ float Reaction::Energy_excl() {
   // return NAN;
 }
 float Reaction::pim_momentum() {
-  // if (_rec_pim_mom != _rec_pim_mom) CalcMissMass();
+
 
   if (TwoPion_missingPim()) {
   // if (TwoPion_exclusive()) {
@@ -202,7 +197,6 @@ float Reaction::pim_momentum() {
     *missingpim_ += *_gamma + *_target - *_prot - *_pip;
 
     return missingpim_->P();
-    // return _rec_pim_mom;
 
   } else
     return NAN;
@@ -262,11 +256,6 @@ float Reaction::pim_Phi_lab_measured() {
       return NAN;
   } else
     return NAN;
-}
-
-float Reaction::w_hadron() {
-  if (TwoPion_exclusive()) return ((*_prot) + (*_pip) + (*_pim)).Mag();
-  else return NAN;
 }
 
 ////////////////mPip

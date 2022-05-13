@@ -39,7 +39,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
   size_t total = 0;
   // For each event
   for (size_t current_event = 0; current_event < num_of_events; current_event++) {
-    // for (size_t current_event = 0; current_event < 350; current_event++) {
     // Get current event
     _chain->GetEntry(current_event);
 
@@ -80,7 +79,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
     // Make a reaction class from the data given
     auto event = std::make_shared<Reaction>(data, beam_energy);
-    // event->SetMomCorrElec();
 
     // For each particle in the event
     for (int part = 1; part < data->gpart(); part++) {
@@ -90,9 +88,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       if (cuts->IsProton(part)) {
         event->SetProton(part);
         statusProt = abs(data->status(part));
-        // std::cout << "_prot px : " << data->px(part) << "_prot py : " << data->py(part) << "_prot pz : " <<
-        // data->pz(part)
-        //           << "_prot E : " << MASS_P << std::endl;
 
       } else if (cuts->IsPip(part)) {
           event->SetPip(part);
@@ -117,7 +112,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         csv_data output;
 
 
-/// 24 GEV test 1) reconstructed  and rec exclusive
+/// 1) reconstructed  and rec exclusive
         output.w = event->W();
         output.q2 = event->Q2();
         output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
@@ -126,7 +121,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         output.elec_phi_rec = (event->elec_phi());
         output.weight_rec = event->weight();
 
-        // /// 24 GEV test 2) reconstructed exclusive 
+        // 2) reconstructed exclusive 
 
         // output.prot_mom_exclusive = event->prot_momentum_measured();
         // output.prot_theta_exclusive = event->prot_theta_lab_measured();
@@ -154,7 +149,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         // output.weight_exclusive = event->weight();
 
         
-// Still 24 gev test 3) for generated 
+//  3) for generated 
         // output.w_mc = mc_event->W_mc();
         // output.q2_mc = mc_event->Q2_mc();
         // // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
@@ -177,7 +172,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
         // output.weight_gen = mc_event->weight();
 
-// 24 gev test finished here 
 
        
         output.status_Elec =  abs(data->status(0));
@@ -185,7 +179,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         output.status_Pip = statusPip;
         output.status_Prot = statusProt;
 
-       
 
         _sync->write(output);
       // }
