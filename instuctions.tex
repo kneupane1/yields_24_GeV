@@ -1,0 +1,112 @@
+\documentclass[a4paper]{article}
+
+\usepackage{fullpage} % Package to use full page
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=bash,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\usepackage{hyperref}
+\title{clas12 analysis with root}
+\author{Nick Tyler}
+\date{02/19/18}
+
+\begin{document}
+
+\maketitle
+
+\section*{Basic instructions on using clas12 analysis}
+
+\section{Running at jlab}
+
+Begin by ssh-ing into ifarm:
+\begin{lstlisting}[language=bash]
+$ ssh -Y username@login.jlab.org
+$ ssh -Y ifarm
+\end{lstlisting}
+
+Once on the farm download and build \emph{hipo2root} converter and \emph{clas12\_analysis}. 
+
+\section{Convert hipo to root}
+First to convert the desired hipo files to root files using \href{https://github.com/tylern4/hipo2root.git}{hipo2root} you should download and build hipo2root.
+
+\begin{lstlisting}[language=bash]
+$ git clone -b jlab --recurse-submodules https://github.com/tylern4/hipo2root.git
+$ cd hipo2root
+$ ./make_hipo2root.py --json bankdefs/rec_particle.json
+$ make
+\end{lstlisting}
+
+After compiling you should see \emph{hipo2root} in the folder. You can check by:
+\begin{lstlisting}[language=bash]
+$ ls
+
+Makefile          hipo2root         lz4
+README.md         hipo2root.cpp     make_hipo2root.py
+bankdefs          hipo2root_docker  singularity
+docker            libcpp
+\end{lstlisting}
+
+Now to convert input.hipo to converted.root you can run:
+\begin{lstlisting}[language=bash]
+$ ./hipo2root input.hipo converted.root
+\end{lstlisting}
+
+Where input.hipo is the name of the file you want to convert and output.root is the name of the output file.
+
+\section{clas12 analysis program}
+Once the desired file is converted you can download the program by running:
+
+\begin{lstlisting}[language=bash]
+$ git clone https://github.com/tylern4/clas12_analysis.git
+$ cd clas12_analysis/cpp
+$ make
+\end{lstlisting}
+
+This will build the program \emph{clas12\_ana} which you can make sure built by running \emph{ls}.
+
+\begin{lstlisting}[language=bash]
+$ ls 
+
+main.cpp main.hpp main.o   makefile clas12_ana
+\end{lstlisting}
+
+To run the program:
+\begin{lstlisting}[language=bash]
+$ ./clas12_ana converted.root out.root
+\end{lstlisting}
+
+There is a deafult energy of 24.0 GeV if you are working with files of a different energy you can change the energy by running, for example with 6.6 GeV:
+\begin{lstlisting}[language=bash]
+$ CLAS12_E=6.6 ./clas12_ana converted.root out.root
+\end{lstlisting}
+
+You can modify the program by editing the cpp/hpp files and rebuild from the folder the files are in by using:
+\begin{lstlisting}[language=bash]
+$ make clean
+$ make
+\end{lstlisting}
+
+
+
+\end{document}
