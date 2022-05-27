@@ -52,7 +52,7 @@ struct csv_data {
     //        "mes,pip_phi_mes,pim_mom_mes,pim_theta_mes,pim_phi_mes,mm2_mPim,mm2_mPip,mm2_mProt,mm2_exclusive_at_zero,energy_x_mu,"
     //        "status_Pim,status_Pip,status_Prot,weight";
     // return "w,q2,sf,elec_mom_rec,elec_th_rec,elec_phi_rec,weight,status_elec,status_Pim,status_Pip,status_Prot";
-    return "w,q2,w_had,w_diff,sf,elec_mom_rec,elec_th_rec,elec_phi_rec,weights,status_elec,status_Pim,status_Pip,"
+    return "w,q2,w_had,w_diff,sf,elec_mom_rec,elec_th_rec,elec_phi_rec,weight,status_elec,status_Pim,status_Pip,"
            "status_Prot";
 
     // return "w_mc,q2_mc,elec_mom_gen,elec_th_gen,elec_phi_gen,prot_mom_gen,prot_th_gen,prot_phi_gen,pip_mom_gen,pip_th_"
