@@ -29,7 +29,7 @@ Reaction::~Reaction() {}
 void Reaction::SetElec() {
   _hasE = true;
   _elec->SetXYZM(_data->px(0), _data->py(0), _data->pz(0), MASS_E);
-  *_gamma += *_beam - *_elec;  
+  *_gamma += *_beam - *_elec;
   // // Can calculate W and Q2 here (useful for simulations as sim do not have elec mom corrections)
   _W = physics::W_calc(*_beam, *_elec);
   _Q2 = physics::Q2_calc(*_beam, *_elec);
@@ -66,7 +66,7 @@ void Reaction::SetProton(int i) {
   _numPos++;
   _hasP = true;
   _prot->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_P);
-  
+
 }
 
 void Reaction::SetPip(int i) {
@@ -74,7 +74,7 @@ void Reaction::SetPip(int i) {
   _numPos++;
   _hasPip = true;
   _pip->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_PIP);
-  
+
 }
 
 
@@ -83,7 +83,7 @@ void Reaction::SetPim(int i) {
   _numNeg++;
   _hasPim = true;
   _pim->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_PIM);
-  
+
 }
 
 void Reaction::SetNeutron(int i) {
@@ -101,6 +101,20 @@ void Reaction::SetOther(int i) {
     _other->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), mass[_data->pid(i)]);
   }
 }
+
+float Reaction::w_hadron() {
+  if (TwoPion_exclusive())
+    return ((*_prot) + (*_pip) + (*_pim)).Mag();
+  else
+    return NAN;
+}
+float Reaction::w_difference() {
+  if (TwoPion_exclusive())
+    return (physics::W_calc(*_beam, *_elec) - ((*_prot) + (*_pip) + (*_pim)).Mag());
+  else
+    return NAN;
+}
+
 
 void Reaction::CalcMissMass() {
   auto mm = std::make_unique<TLorentzVector>();

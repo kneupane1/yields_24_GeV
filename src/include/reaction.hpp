@@ -23,7 +23,7 @@ class Reaction {
   std::unique_ptr<TLorentzVector> _pim;
   std::unique_ptr<TLorentzVector> _other;
   std::unique_ptr<TLorentzVector> _neutron;
- 
+
 
   bool _mc = false;
 
@@ -64,7 +64,7 @@ class Reaction {
 
   void SetElec();
 
-  
+
 
 
  public:
@@ -72,8 +72,8 @@ class Reaction {
   Reaction(const std::shared_ptr<Branches12> &data, float beam_energy);
   ~Reaction();
   inline float weight() {
-    // return _data->mc_weight();
-    return 1.0;
+    return _data->mc_weight();
+    // return 1.0;
   }
   // Check lists when you swich from mc to exp or vice-versa
   // 1. inline weight function above
@@ -126,6 +126,9 @@ class Reaction {
   float Energy_excl();
   float MM2_mPip();
   float MM2_mProt();
+
+  float w_hadron();
+  float w_difference();
 
   inline float W() { return _W; }
   inline float Q2() { return _Q2; }
