@@ -104,7 +104,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         // if (event->TwoPion_missingPim()) {
         // if (event->TwoPion_missingPip()) {
           // if (event->TwoPion_missingProt()) {
-        if (event->TwoPion_exclusive()) {
+        // if (event->TwoPion_exclusive()) {
       // if (event->W() > 1.3 && event->W() < 2.5 && event->Q2() > 1.5 && event->Q2() < 10.5 && abs(event->MM2_exclusive()) < 0.03 && abs(event->Energy_excl()) < 0.3) {
       // //   //&&
       // //   // abs(event->MM2_exclusive()) < 0.03) {
@@ -113,15 +113,20 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
 
 /// 1) reconstructed  and rec exclusive
-        output.w = event->W();
-        output.q2 = event->Q2();
-        output.w_had = event->w_hadron();
-        output.w_diff = event->w_difference();
-        output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
-        output.elec_mom_rec = (event->elec_mom());
-        output.elec_theta_rec = (event->elec_theta());
-        output.elec_phi_rec = (event->elec_phi());
-        output.weight_rec = event->weight();
+        // output.w = event->W();
+        // output.q2 = event->Q2();
+        // output.w_had = event->w_hadron();
+        // output.w_diff = event->w_difference();
+        // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
+        // output.elec_mom_rec = (event->elec_mom());
+        // output.elec_theta_rec = (event->elec_theta());
+        // output.elec_phi_rec = (event->elec_phi());
+        // output.weight_rec = event->weight();
+
+        // output.status_Elec =  abs(data->status(0));
+        // output.status_Pim = statusPim;
+        // output.status_Pip = statusPip;
+        // output.status_Prot = statusProt;
 
         // 2) reconstructed exclusive
 
@@ -152,38 +157,32 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
 
 //  3) for generated
-        // output.w_mc = mc_event->W_mc();
-        // output.q2_mc = mc_event->Q2_mc();
-        // // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
+        output.w_mc = mc_event->W_mc();
+        output.q2_mc = mc_event->Q2_mc();
+        // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
 
-        // output.gen_elec_mom = (mc_event->elec_mom_mc_gen());
-        // output.gen_elec_theta = (mc_event->elec_theta_mc_gen());
-        // output.gen_elec_phi = (mc_event->elec_phi_mc_gen());
+        output.gen_elec_mom = (mc_event->elec_mom_mc_gen());
+        output.gen_elec_theta = (mc_event->elec_theta_mc_gen());
+        output.gen_elec_phi = (mc_event->elec_phi_mc_gen());
 
-        // output.gen_prot_mom = (mc_event->prot_mom_mc_gen());
-        // output.gen_prot_theta = (mc_event->prot_theta_mc_gen());
-        // output.gen_prot_phi = (mc_event->prot_phi_mc_gen());
+        output.gen_prot_mom = (mc_event->prot_mom_mc_gen());
+        output.gen_prot_theta = (mc_event->prot_theta_mc_gen());
+        output.gen_prot_phi = (mc_event->prot_phi_mc_gen());
 
-        // output.gen_pip_mom = (mc_event->pip_mom_mc_gen());
-        // output.gen_pip_theta = (mc_event->pip_theta_mc_gen());
-        // output.gen_pip_phi = (mc_event->pip_phi_mc_gen());
+        output.gen_pip_mom = (mc_event->pip_mom_mc_gen());
+        output.gen_pip_theta = (mc_event->pip_theta_mc_gen());
+        output.gen_pip_phi = (mc_event->pip_phi_mc_gen());
 
-        // output.gen_pim_mom = (mc_event->pim_mom_mc_gen());
-        // output.gen_pim_theta = (mc_event->pim_theta_mc_gen());
-        // output.gen_pim_phi = (mc_event->pim_phi_mc_gen());
+        output.gen_pim_mom = (mc_event->pim_mom_mc_gen());
+        output.gen_pim_theta = (mc_event->pim_theta_mc_gen());
+        output.gen_pim_phi = (mc_event->pim_phi_mc_gen());
 
-        // output.weight_gen = mc_event->weight();
+        output.weight_gen = mc_event->weight();
 
-
-
-        output.status_Elec =  abs(data->status(0));
-        output.status_Pim = statusPim;
-        output.status_Pip = statusPip;
-        output.status_Prot = statusProt;
 
 
         _sync->write(output);
-      }
+      // }
     // }
   }
   std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
