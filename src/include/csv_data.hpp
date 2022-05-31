@@ -98,6 +98,7 @@ struct csv_data {
     os << data.gen_pim_mom << ",";
     os << data.gen_pim_theta << ",";
     os << data.gen_pim_phi<< ",";
+    os << std::setprecision(6);
 
     os << data.weight_gen<< ",";
 
