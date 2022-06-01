@@ -19,7 +19,6 @@ bool Cuts::ElectronCuts() {
 
   _elec &= (_data->charge(0) == NEGATIVE);
   _elec &= (_data->pid(0) == ELECTRON);
-  _elec &= (2000 <= abs(_data->status(0)));
 
   return _elec;
 }
@@ -29,7 +28,7 @@ bool Cuts::IsPip(int i) {
   bool _pip = true;
   //   _pip &= (_data->charge(i) == POSITIVE);
   _pip &= (_data->pid(i) == PIP);
-  
+
   return _pip;
 }
 bool Cuts::IsProton(int i) {

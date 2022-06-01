@@ -53,6 +53,9 @@ class Reaction {
 
   float _W = NAN;
   float _Q2 = NAN;
+  double _emu_prime_mag2;
+  double _emu_mag2;
+  double _elec_energy = NAN;
 
   double _elec_mom = NAN;
   float _theta_e = NAN;
@@ -85,8 +88,11 @@ class Reaction {
   void SetMomCorrElec();
   double dpp(float px, float py, float pz, int sec_mom_corr, int ivec);
   double elec_mom();
+  double elec_E();
   double elec_theta();
   double elec_phi();
+  double elec_prime_mass2();
+  double elec_mass2();
 
   inline bool mc() { return _mc; }
   void SetProton(int i);

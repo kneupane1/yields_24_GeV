@@ -31,19 +31,39 @@ void Reaction::SetElec() {
   _elec->SetXYZM(_data->px(0), _data->py(0), _data->pz(0), MASS_E);
   *_gamma += *_beam - *_elec;
   // // Can calculate W and Q2 here (useful for simulations as sim do not have elec mom corrections)
+
   _W = physics::W_calc(*_beam, *_elec);
   _Q2 = physics::Q2_calc(*_beam, *_elec);
 
-    _elec_mom = _elec->P();
-    _theta_e = _elec->Theta() * 180.0 / PI;
+  _emu_prime_mag2 = _elec->M2();
+  _emu_mag2 = _beam->M2();
+  _elec_energy = _elec->E();
 
-    if (_elec->Phi() > 0)
-      _elec_phi = _elec->Phi() * 180 / PI;
-    else if (_elec->Phi() < 0)
-      _elec_phi = (_elec->Phi() + 2 * PI) * 180 / PI;
+  _elec_mom = _elec->P();
+  _theta_e = _elec->Theta() * 180.0 / PI;
+
+  if (_elec->Phi() > 0)
+    _elec_phi = _elec->Phi() * 180 / PI;
+  else if (_elec->Phi() < 0)
+    _elec_phi = (_elec->Phi() + 2 * PI) * 180 / PI;
 
 }
+double Reaction::elec_prime_mass2() {
+  if (_emu_prime_mag2 != _emu_prime_mag2) SetElec();
 
+  return _emu_prime_mag2;
+}double Reaction::elec_mass2() {
+  if (_emu_mag2 != _emu_mag2) SetElec();
+
+  return _emu_mag2;
+}
+
+double Reaction::elec_E() {
+  if (_elec_energy != _elec_energy) SetElec();
+  // std::cout << " emec mom " << _elec_mom << std::endl;
+
+  return _elec_energy;
+}
 double Reaction::elec_mom() {
   if (_elec_mom != _elec_mom) SetElec();
   // std::cout << " emec mom " << _elec_mom << std::endl;
