@@ -19,8 +19,12 @@ struct csv_data {
   float elec_theta_rec;
   float elec_phi_rec;
 
+  float energy_x_mu;
+  float mom_x_mu;
+
   float q2;
 
+  float gen_elec_E;
   float gen_elec_mom;
   float gen_elec_theta;
   float gen_elec_phi;
@@ -45,21 +49,19 @@ struct csv_data {
   int status_Pip;
   int status_Prot;
 
-
-
   // Static functions can be called without making a new struct
   static std::string header() {
     // Make a string for the header of the csv file mPim case
     // 24 GeV test
-    // return "w,q2,sf,elec_mom_rec,elec_th_rec,elec_phi_rec,prot_mom_mes,prot_theta_mes,prot_phi_mes,pip_mom_mes,pip_theta_"
+    // return
+    // "w,q2,sf,elec_mom_rec,elec_th_rec,elec_phi_rec,prot_mom_mes,prot_theta_mes,prot_phi_mes,pip_mom_mes,pip_theta_"
     //        "mes,pip_phi_mes,pim_mom_mes,pim_theta_mes,pim_phi_mes,mm2_mPim,mm2_mPip,mm2_mProt,mm2_exclusive_at_zero,energy_x_mu,"
     //        "status_Pim,status_Pip,status_Prot,weight";
     // return "w,q2,sfelec_th_rec,elec_phi_rec,weight,status_elec,status_Pim,status_Pip,status_Prot";
-    return "w,q2,w_had,w_diff,sf,emu_prime_m2,emu_m2,elec_energy_rec,elec_mom_rec,elec_th_rec,elec_phi_rec,weight,status_"
-           "elec,status_Pim,status_Pip,"
-           "status_Prot";
+    return "w,q2,w_had,w_diff,sf,elec_energy_rec,elec_mom_rec,elec_th_rec,elec_phi_rec, weight, energy_x_mu, mom_x_mu, w_mc, q2_mc, elec_gen_energy, elec_gen_mom ";
 
-    // return "w_mc,q2_mc,elec_mom_gen,elec_th_gen,elec_phi_gen,prot_mom_gen,prot_th_gen,prot_phi_gen,pip_mom_gen,pip_th_"
+    // return
+    // "w_mc,q2_mc,elec_mom_gen,elec_th_gen,elec_phi_gen,prot_mom_gen,prot_th_gen,prot_phi_gen,pip_mom_gen,pip_th_"
     //        "gen,pip_phi_gen,pim_mom_gen,pim_th_gen,pim_phi_gen,weight";
   }
 
@@ -70,26 +72,27 @@ struct csv_data {
     os << data.w_had << ",";
     os << data.w_diff << ",";
     os << data.sf << ",";
-    os << std::setprecision(10);
-    os << data.elec_prime_m2 << ",";
-    os << data.elec_m2 << ",";
+    // os << std::setprecision(10);
+    // os << data.elec_prime_m2 << ",";
+    // os << data.elec_m2 << ",";
     os << data.elec_energy_rec << ",";
     os << data.elec_mom_rec << ",";
     os << data.elec_theta_rec << ",";
     os << data.elec_phi_rec << ",";
     os << std::setprecision(7);
-    os << data.weight_rec<< ",";
+    os << data.weight_rec << ",";
     os << std::setprecision(5);
-    os << data.status_Elec << ",";
-    os << data.status_Pim << ",";
-    os << data.status_Pip << ",";
-    os << data.status_Prot << ",";
+    // os << data.status_Elec << ",";
+    // os << data.status_Pim << ",";
+    // os << data.status_Pip << ",";
+    // os << data.status_Prot << ",";
+    os << data.energy_x_mu << ",";
+    os << data.mom_x_mu << ",";
 
-
-    // os << data.w_mc << ",";
-    // os << data.q2_mc << ",";
-
-    // os << data.gen_elec_mom << ",";
+    os << data.w_mc << ",";
+    os << data.q2_mc << ",";
+    os << data.gen_elec_E << ",";
+    os << data.gen_elec_mom << ",";
     // os << data.gen_elec_theta<< ",";
     // os << data.gen_elec_phi << ",";
 
@@ -107,7 +110,6 @@ struct csv_data {
     // os << std::setprecision(6);
 
     // os << data.weight_gen<< ",";
-
 
     return os;
   }

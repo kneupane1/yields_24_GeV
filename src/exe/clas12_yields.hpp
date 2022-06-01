@@ -106,9 +106,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
           // if (event->TwoPion_missingProt()) {
         if (event->TwoPion_exclusive()) {
       // if (event->W() > 1.3 && event->W() < 2.5 && event->Q2() > 1.5 && event->Q2() < 10.5 && abs(event->MM2_exclusive()) < 0.03 && abs(event->Energy_excl()) < 0.3) {
-      // //   //&&
-      // //   // abs(event->MM2_exclusive()) < 0.03) {
-      // //   // total++;
+        // //   //&&
+        // //   // abs(event->MM2_exclusive()) < 0.03) {
+        // //   // total++;
         csv_data output;
 
 
@@ -118,18 +118,18 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         output.w_had = event->w_hadron();
         output.w_diff = event->w_difference();
         output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
-        output.elec_prime_m2 = (event->elec_prime_mass2());
-        output.elec_m2 = (event->elec_mass2());
+        // output.elec_prime_m2 = (event->elec_prime_mass2());
+        // output.elec_m2 = (event->elec_mass2());
         output.elec_energy_rec = (event->elec_E());
         output.elec_mom_rec = (event->elec_mom());
         output.elec_theta_rec = (event->elec_theta());
         output.elec_phi_rec = (event->elec_phi());
         output.weight_rec = event->weight();
 
-        output.status_Elec =  abs(data->status(0));
-        output.status_Pim = statusPim;
-        output.status_Pip = statusPip;
-        output.status_Prot = statusProt;
+        // output.status_Elec =  abs(data->status(0));
+        // output.status_Pim = statusPim;
+        // output.status_Pip = statusPip;
+        // output.status_Prot = statusProt;
 
         // 2) reconstructed exclusive
 
@@ -150,7 +150,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         // output.mm2_mProt = event->MM2_mProt();
 
         // output.mm2_exclusive_at_zero = event->MM2_exclusive();
-        // output.energy_x_mu = event->Energy_excl();
+        output.energy_x_mu = event->Energy_excl();
+        output.mom_x_mu = event->Mom_excl();
 
         // output.status_Pim = statusPim;
         // output.status_Pip = statusPip;
@@ -160,11 +161,11 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
 
 // //  3) for generated
-//         output.w_mc = mc_event->W_mc();
-//         output.q2_mc = mc_event->Q2_mc();
+        output.w_mc = mc_event->W_mc();
+        output.q2_mc = mc_event->Q2_mc();
 //         // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
-
-//         output.gen_elec_mom = (mc_event->elec_mom_mc_gen());
+        output.gen_elec_E = (mc_event->elec_E_mc_gen());
+        output.gen_elec_mom = (mc_event->elec_mom_mc_gen());
 //         output.gen_elec_theta = (mc_event->elec_theta_mc_gen());
 //         output.gen_elec_phi = (mc_event->elec_phi_mc_gen());
 
@@ -186,7 +187,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
         _sync->write(output);
       // }
-    }
+      }
   }
   std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
   // Return the total number of events

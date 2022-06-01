@@ -169,6 +169,7 @@ void Reaction::CalcMissMass() {
 
     _MM2_exclusive = mm_excl->M2();
     _excl_Energy = mm_excl->E();
+    _excl_Mom = mm_excl->P();
 
     // *mm_mpip += (*_gamma + *_target);
     // *mm_mpip -= *_prot;
@@ -219,6 +220,12 @@ float Reaction::Energy_excl() {
   //  std::cout << "_x_mu_p  " << _x_mu->E() << '\n';
   //  if (_x_mu_E > 0)
   return _excl_Energy;
+  // else
+  // return NAN;
+}
+float Reaction::Mom_excl() {
+  if (_excl_Mom != _excl_Mom) CalcMissMass();
+  return _excl_Mom;
   // else
   // return NAN;
 }
@@ -463,6 +470,8 @@ float MCReaction::elec_mom_mc_gen() {
   return _elec_mc->P();
 
 }
+float MCReaction::elec_E_mc_gen() { return _elec_mc->E(); }
+
 float MCReaction::elec_theta_mc_gen() { return _elec_mc->Theta() * 180 / PI; }
 float MCReaction::elec_phi_mc_gen() {
   if (_elec_mc->Phi() >= 0)
