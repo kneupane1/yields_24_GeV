@@ -101,10 +101,12 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         event->SetOther(part);
       }
     }
-        // if (event->TwoPion_missingPim()) {
-        // if (event->TwoPion_missingPip()) {
-          // if (event->TwoPion_missingProt()) {
-        if (event->TwoPion_exclusive()) {
+    std::cout << event->weight() << std::endl;
+
+    // if (event->TwoPion_missingPim()) {
+    // if (event->TwoPion_missingPip()) {
+    // if (event->TwoPion_missingProt()) {
+    // if (event->TwoPion_exclusive()) {
       // if (event->W() > 1.3 && event->W() < 2.5 && event->Q2() > 1.5 && event->Q2() < 10.5 && abs(event->MM2_exclusive()) < 0.03 && abs(event->Energy_excl()) < 0.3) {
         // //   //&&
         // //   // abs(event->MM2_exclusive()) < 0.03) {
@@ -187,7 +189,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
         _sync->write(output);
       // }
-      }
+      // }
   }
   std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
   // Return the total number of events
