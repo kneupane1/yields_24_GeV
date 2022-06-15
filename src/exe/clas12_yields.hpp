@@ -186,7 +186,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
     output.weight_gen = mc_event->weight();
 
     _sync->write(output);
-    }
+    // }
     // }
   }
   std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
