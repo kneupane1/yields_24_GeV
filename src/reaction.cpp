@@ -12,8 +12,6 @@ Reaction::Reaction(const std::shared_ptr<Branches12>& data, float beam_energy) {
   _gamma = std::make_unique<TLorentzVector>();
   _target = std::make_unique<TLorentzVector>(0.0, 0.0, 0.0, MASS_P);
   _elec = std::make_unique<TLorentzVector>();
-
-
   this->SetElec();
 
   _prot = std::make_unique<TLorentzVector>();
