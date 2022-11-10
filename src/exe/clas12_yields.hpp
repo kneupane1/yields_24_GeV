@@ -57,62 +57,62 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
     // // If we pass electron cuts the event is processed
     total++;
 
-    // Make a reaction class from the data given
-    auto mc_event = std::make_shared<MCReaction>(data, beam_energy);
-
-    for (int part = 1; part < data->mc_npart(); part++) {
-      // Check particle ID's and fill the reaction class
-
-      if (data->mc_pid(part) == PIP) {
-        mc_event->SetMCPip(part);
-      } else if (data->mc_pid(part) == PROTON) {
-        mc_event->SetMCProton(part);
-      } else if (data->mc_pid(part) == PIM) {
-        mc_event->SetMCPim(part);
-        // } else {
-        //   mc_event->SetMCOther(part);
-      }
-    }
-
-    // auto dt = std::make_shared<Delta_T>(data);
-    // auto cuts = std::make_shared<uconn_Cuts>(data);
-    // // auto cuts = std::make_shared<rga_Cuts>(data);
-    // if (!cuts->ElectronCuts()) continue;
-
     // // Make a reaction class from the data given
-    // auto event = std::make_shared<Reaction>(data, beam_energy);
+    // auto mc_event = std::make_shared<MCReaction>(data, beam_energy);
 
-    // // For each particle in the event
-    // for (int part = 1; part < data->gpart(); part++) {
-    //   dt->dt_calc(part);
-
+    // for (int part = 1; part < data->mc_npart(); part++) {
     //   // Check particle ID's and fill the reaction class
-    //   if (cuts->IsProton(part)) {
-    //     event->SetProton(part);
-    //     statusProt = abs(data->status(part));
 
-    //   } else if (cuts->IsPip(part)) {
-    //     event->SetPip(part);
-    //     statusPip = abs(data->status(part));
-
-    //   } else if (cuts->IsPim(part)) {
-    //     event->SetPim(part);
-    //     statusPim = abs(data->status(part));
-
-    //   } else {
-    //     event->SetOther(part);
+    //   if (data->mc_pid(part) == PIP) {
+    //     mc_event->SetMCPip(part);
+    //   } else if (data->mc_pid(part) == PROTON) {
+    //     mc_event->SetMCProton(part);
+    //   } else if (data->mc_pid(part) == PIM) {
+    //     mc_event->SetMCPim(part);
+    //     // } else {
+    //     //   mc_event->SetMCOther(part);
     //   }
     // }
+
+    auto dt = std::make_shared<Delta_T>(data);
+    auto cuts = std::make_shared<uconn_Cuts>(data);
+    // auto cuts = std::make_shared<rga_Cuts>(data);
+    if (!cuts->ElectronCuts()) continue;
+
+    // Make a reaction class from the data given
+    auto event = std::make_shared<Reaction>(data, beam_energy);
+
+    // For each particle in the event
+    for (int part = 1; part < data->gpart(); part++) {
+      dt->dt_calc(part);
+
+      // Check particle ID's and fill the reaction class
+      if (cuts->IsProton(part)) {
+        event->SetProton(part);
+        statusProt = abs(data->status(part));
+
+      } else if (cuts->IsPip(part)) {
+        event->SetPip(part);
+        statusPip = abs(data->status(part));
+
+      } else if (cuts->IsPim(part)) {
+        event->SetPim(part);
+        statusPim = abs(data->status(part));
+
+      } else {
+        event->SetOther(part);
+      }
+    }
     // std::cout << event->weight() << std::endl;
 
     // if (event->TwoPion_missingPim()) {
     // if (event->TwoPion_missingPip()) {
     // if (event->TwoPion_missingProt()) {
-    // if (event->TwoPion_exclusive()) {
+    if (event->TwoPion_exclusive()) {
     // if (event->W() > 1.25 && event->W() < 2.55 && event->Q2() > 1.5 && event->Q2() < 10.5) {
-    // if (event->W() > 1.4 && event->W() < 2.0 && event->Q2() > 2.0 && event->Q2() < 12.0 && event->weight()>0.0) {
+    if (event->W() > 1.4 && event->W() < 2.0 && event->Q2() > 2.0 && event->Q2() < 12.0 && event->weight()>0.0) {
       // if (event->W() > 1.25 && event->W() < 2.55 ) {
-    if (mc_event->W_mc() > 1.4 && mc_event->W_mc() < 2.0 && mc_event->Q2_mc() > 2.0 && mc_event->Q2_mc() < 12.0 && mc_event->weight() > 0.0) {
+    // if (mc_event->W_mc() > 1.4 && mc_event->W_mc() < 2.0 && mc_event->Q2_mc() > 2.0 && mc_event->Q2_mc() < 12.0 && mc_event->weight() > 0.0) {
       total_twopion_events++;
       // && abs(event->MM2_exclusive()) < 0.03 && abs(event->Energy_excl()) < 0.3) {
       //   //&&
@@ -121,8 +121,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       csv_data output;
 
       // // // /// 1) reconstructed  and rec exclusive
-      // output.w = event->W();
-      // output.q2 = event->Q2();
+      output.w = event->W();
+      output.q2 = event->Q2();
       // //         output.w_had = event->w_hadron();
       //         // output.w_diff = event->w_difference();
       // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
@@ -133,7 +133,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       // output.elec_theta_rec = (event->elec_theta());
       // output.elec_phi_rec = (event->elec_phi());
       // output.status_Elec = abs(data->status(0));
-      // output.weight_rec = event->weight();
+      output.weight_rec = event->weight();
       // output.no_of_events =
 
       // // //         // output.status_Elec =  abs(data->status(0));
@@ -170,8 +170,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       // // //         // output.weight_exclusive = event->weight();
 
       // // // // // //  3) for generated
-      output.w_mc = mc_event->W_mc();
-      output.q2_mc = mc_event->Q2_mc();
+      // output.w_mc = mc_event->W_mc();
+      // output.q2_mc = mc_event->Q2_mc();
 
       // //         // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
       // output.gen_elec_E = mc_event->elec_E_mc_gen();
@@ -191,10 +191,10 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       //         output.gen_pim_theta = (mc_event->pim_theta_mc_gen());
       //         output.gen_pim_phi = (mc_event->pim_phi_mc_gen());
 
-      output.weight_gen = mc_event->weight();
+      // output.weight_gen = mc_event->weight();
 
       _sync->write(output);
-      // }
+      }
     }
   }
   std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
