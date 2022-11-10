@@ -70,8 +70,8 @@ struct csv_data {
 
   friend std ::ostream &operator<<(std::ostream &os, const csv_data &data) {
     os << std::setprecision(7);
-    // os << data.w_mc << ",";
-    // os << data.q2_mc << ",";
+    os << data.w_mc << ",";
+    os << data.q2_mc << ",";
 
     // // os << data.gen_elec_E << ",";
     // os << data.gen_elec_mom << ",";
@@ -89,8 +89,8 @@ struct csv_data {
     // os << data.gen_pim_mom << ",";
     // os << data.gen_pim_theta << ",";
     // os << data.gen_pim_phi<< ",";
-    os << data.w << ",";
-    os << data.q2 << ",";
+    // os << data.w << ",";
+    // os << data.q2 << ",";
     // os << data.w_had << ",";
     // // os << data.w_diff << ",";
     // os << data.sf << ",";
@@ -105,8 +105,8 @@ struct csv_data {
 
     // os << data.status_Elec << ",";
 
-    os << std::setprecision(8);
-    os << data.weight_rec << ",";
+    // os << std::setprecision(8);
+    // os << data.weight_rec << ",";
     // os << std::setprecision(7);
     // os << data.status_Elec << ",";
     // // // os << data.status_Pim << ",";
@@ -119,7 +119,7 @@ struct csv_data {
 
     // os << std::setprecision(8);
 
-    // os << data.weight_gen<< ",";
+    os << data.weight_gen<< ",";
 
     return os;
   }
