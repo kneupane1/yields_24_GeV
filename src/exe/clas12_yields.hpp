@@ -16,11 +16,11 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
   // Get the number of events in this thread
   size_t num_of_events = (int)_chain->GetEntries();
 
-  float beam_energy = 24.0;
+  float beam_energy = 10.6;
   if (std::is_same<CutType, rga_Cuts>::value) {
-    beam_energy = 24.0;
+    beam_energy = 10.6;
   } else if (std::is_same<CutType, uconn_Cuts>::value) {
-    beam_energy = 24.0;
+    beam_energy = 10.6;
   }
 
   if (getenv("BEAM_E") != NULL) beam_energy = atof(getenv("BEAM_E"));
@@ -37,6 +37,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
 
   // Total number of events "Processed"
   size_t total = 0;
+  float vertex_hadron[3][3];
+
   size_t total_twopion_events = 0;
 
   // For each event
@@ -57,62 +59,75 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
     // // If we pass electron cuts the event is processed
     total++;
 
-    // // Make a reaction class from the data given
-    // auto mc_event = std::make_shared<MCReaction>(data, beam_energy);
-
-    // for (int part = 1; part < data->mc_npart(); part++) {
-    //   // Check particle ID's and fill the reaction class
-
-    //   if (data->mc_pid(part) == PIP) {
-    //     mc_event->SetMCPip(part);
-    //   } else if (data->mc_pid(part) == PROTON) {
-    //     mc_event->SetMCProton(part);
-    //   } else if (data->mc_pid(part) == PIM) {
-    //     mc_event->SetMCPim(part);
-    //     // } else {
-    //     //   mc_event->SetMCOther(part);
-    //   }
-    // }
-
-    auto dt = std::make_shared<Delta_T>(data);
-    auto cuts = std::make_shared<uconn_Cuts>(data);
-    // auto cuts = std::make_shared<rga_Cuts>(data);
-    if (!cuts->ElectronCuts()) continue;
-
     // Make a reaction class from the data given
-    auto event = std::make_shared<Reaction>(data, beam_energy);
+    auto mc_event = std::make_shared<MCReaction>(data, beam_energy);
 
-    // For each particle in the event
-    for (int part = 1; part < data->gpart(); part++) {
-      dt->dt_calc(part);
-
+    for (int part = 1; part < data->mc_npart(); part++) {
       // Check particle ID's and fill the reaction class
-      if (cuts->IsProton(part)) {
-        event->SetProton(part);
-        statusProt = abs(data->status(part));
 
-      } else if (cuts->IsPip(part)) {
-        event->SetPip(part);
-        statusPip = abs(data->status(part));
+      if (data->mc_pid(part) == PIP) {
+        mc_event->SetMCPip(part);
+        vertex_hadron[1][0] = data->vx(part);
+        vertex_hadron[1][1] = data->vy(part);
+        vertex_hadron[1][2] = data->vz(part);
 
-      } else if (cuts->IsPim(part)) {
-        event->SetPim(part);
-        statusPim = abs(data->status(part));
+      } else if (data->mc_pid(part) == PROTON) {
+        mc_event->SetMCProton(part);
 
-      } else {
-        event->SetOther(part);
+        vertex_hadron[0][0] = data->vx(part);
+        vertex_hadron[0][1] = data->vy(part);
+        vertex_hadron[0][2] = data->vz(part);
+
+      } else if (data->mc_pid(part) == PIM) {
+        mc_event->SetMCPim(part);
+        vertex_hadron[2][0] = data->vx(part);
+        vertex_hadron[2][1] = data->vy(part);
+        vertex_hadron[2][2] = data->vz(part);
+        // } else {
+        //   mc_event->SetMCOther(part);
       }
     }
+
+    // auto dt = std::make_shared<Delta_T>(data);
+    // auto cuts = std::make_shared<uconn_Cuts>(data);
+    // // auto cuts = std::make_shared<rga_Cuts>(data);
+    // if (!cuts->ElectronCuts()) continue;
+
+    // // Make a reaction class from the data given
+    // auto event = std::make_shared<Reaction>(data, beam_energy);
+
+    // // For each particle in the event
+    // for (int part = 1; part < data->gpart(); part++) {
+    //   dt->dt_calc(part);
+
+    //   // Check particle ID's and fill the reaction class
+    //   if (cuts->IsProton(part)) {
+    //     event->SetProton(part);
+    //     statusProt = abs(data->status(part));
+
+    //   } else if (cuts->IsPip(part)) {
+    //     event->SetPip(part);
+    //     statusPip = abs(data->status(part));
+
+    //   } else if (cuts->IsPim(part)) {
+    //     event->SetPim(part);
+    //     statusPim = abs(data->status(part));
+
+    //   } else {
+    //     event->SetOther(part);
+    //   }
+    // }
     // std::cout << event->weight() << std::endl;
 
     // if (event->TwoPion_missingPim()) {
     // if (event->TwoPion_missingPip()) {
     // if (event->TwoPion_missingProt()) {
-    if (event->TwoPion_exclusive()) {
+    // if (event->TwoPion_exclusive()) {
     // if (event->W() > 1.25 && event->W() < 2.55 && event->Q2() > 1.5 && event->Q2() < 10.5) {
-    if (event->W() > 1.4 && event->W() < 2.0 && event->Q2() > 2.0 && event->Q2() < 30.0 && event->weight()>0.0) {
-      // if (event->W() > 1.25 && event->W() < 2.55 ) {
-    // if (mc_event->W_mc() > 1.4 && mc_event->W_mc() < 2.0 && mc_event->Q2_mc() > 2.0 && mc_event->Q2_mc() < 12.0 && mc_event->weight() > 0.0) {
+    // if (event->W() > 1.4 && event->W() < 2.0 && event->Q2() > 2.0 && event->Q2() < 30.0 && event->weight()>0.0) {
+    // if (event->W() > 1.25 && event->W() < 2.55 ) {
+    if (mc_event->W_mc() > 1.4 && mc_event->W_mc() < 2.0 && mc_event->Q2_mc() > 2.0 && mc_event->Q2_mc() < 12.0 &&
+        mc_event->weight() > 0.0) {
       total_twopion_events++;
       // && abs(event->MM2_exclusive()) < 0.03 && abs(event->Energy_excl()) < 0.3) {
       //   //&&
@@ -121,8 +136,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       csv_data output;
 
       // // // /// 1) reconstructed  and rec exclusive
-      output.w = event->W();
-      output.q2 = event->Q2();
+      // output.w = event->W();
+      // output.q2 = event->Q2();
       // //         output.w_had = event->w_hadron();
       //         // output.w_diff = event->w_difference();
       // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
@@ -133,7 +148,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       // output.elec_theta_rec = (event->elec_theta());
       // output.elec_phi_rec = (event->elec_phi());
       // output.status_Elec = abs(data->status(0));
-      output.weight_rec = event->weight();
+      // output.weight_rec = event->weight();
       // output.no_of_events =
 
       // // //         // output.status_Elec =  abs(data->status(0));
@@ -170,8 +185,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       // // //         // output.weight_exclusive = event->weight();
 
       // // // // // //  3) for generated
-      // output.w_mc = mc_event->W_mc();
-      // output.q2_mc = mc_event->Q2_mc();
+      output.w_mc = mc_event->W_mc();
+      output.q2_mc = mc_event->Q2_mc();
 
       // //         // output.sf = (data->ec_tot_energy(0) / (event->elec_mom()));
       // output.gen_elec_E = mc_event->elec_E_mc_gen();
@@ -191,15 +206,31 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       //         output.gen_pim_theta = (mc_event->pim_theta_mc_gen());
       //         output.gen_pim_phi = (mc_event->pim_phi_mc_gen());
 
-      // output.weight_gen = mc_event->weight();
+      output.vertex_x = data->vx(0);
+      output.vertex_y = data->vy(0);
+      output.vertex_z = data->vz(0);
+
+      output.vertex_had[0][0] = vertex_hadron[0][0];
+      output.vertex_had[0][1] = vertex_hadron[0][1];
+      output.vertex_had[0][2] = vertex_hadron[0][2];
+
+      output.vertex_had[1][0] = vertex_hadron[1][0];
+      output.vertex_had[1][1] = vertex_hadron[1][1];
+      output.vertex_had[1][2] = vertex_hadron[1][2];
+
+      output.vertex_had[2][0] = vertex_hadron[2][0];
+      output.vertex_had[2][1] = vertex_hadron[2][1];
+      output.vertex_had[2][2] = vertex_hadron[2][2];
+
+      output.weight_gen = mc_event->weight();
 
       _sync->write(output);
-      }
+      // }
     }
   }
   std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
   // Return the total number of events
-  std::cout<<" total no of events = "<<total<<std::endl;
+  std::cout << " total no of events = " << total << std::endl;
   std::cout << " total no of twopion events = " << total_twopion_events << std::endl;
 
   return num_of_events;
