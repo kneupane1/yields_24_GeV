@@ -19,6 +19,7 @@ bool Cuts::ElectronCuts() {
 
   _elec &= (_data->charge(0) == NEGATIVE);
   _elec &= (_data->pid(0) == ELECTRON);
+  _elec &= (2000 <= abs(_data->status(0)) && abs(_data->status(0)) < 4000);
 
   return _elec;
 }
@@ -57,5 +58,7 @@ bool uconn_Cuts::ElectronCuts() {
   //
   cut &= (_data->charge(0) == NEGATIVE);
   cut &= (_data->pid(0) == ELECTRON);
+  cut &= (2000 <= abs(_data->status(0)) && abs(_data->status(0)) < 4000);
+
   return cut;
 }
