@@ -68,17 +68,17 @@ struct csv_data {
     // return "w,q2,w_had,weight,energy_x_mu,mom_x_mu,w_mc,q2_mc";
     // return "w,q2,w_had,weight,energy_x_mu,mom_x_mu";
 
-    return "vx_elec_mc,vy_elec,vz_elec,vx_prot,vy_prot,vz_prot,vx_pip,vy_pip,vz_pip,vx_pim,vy_pim,vz_pim"
-           ",weight";
-    // return
-    // "w_mc,q2_mc,elec_mom_gen,elec_th_gen,elec_phi_gen,prot_mom_gen,prot_th_gen,prot_phi_gen,pip_mom_gen,pip_th_"
+    // return "vx_elec,vy_elec,vz_elec,vx_prot,vy_prot,vz_prot,vx_pip,vy_pip,vz_pip,vx_pim,vy_pim,vz_pim"
+    //        ",weight";
+    return "w_mc,q2_mc,weight";
+    // ,elec_mom_gen, elec_th_gen, elec_phi_gen, prot_mom_gen, prot_th_gen, prot_phi_gen, pip_mom_gen, pip_th_ "
     //        "gen,pip_phi_gen,pim_mom_gen,pim_th_gen,pim_phi_gen,weight";
   }
 
   friend std ::ostream &operator<<(std::ostream &os, const csv_data &data) {
     os << std::setprecision(7);
-    // os << data.w_mc << ",";
-    // os << data.q2_mc << ",";
+    os << data.w_mc << ",";
+    os << data.q2_mc << ",";
 
     // // os << data.gen_elec_E << ",";
     // os << data.gen_elec_mom << ",";
@@ -124,27 +124,27 @@ struct csv_data {
     // os << data.mom_x_mu << ",";
 
 
-    // os << std::setprecision(8);
-    os << data.vertex_x << ",";
-    os << data.vertex_y << ",";
-    os << data.vertex_z << ",";
+    // // os << std::setprecision(8);
+    // os << data.vertex_x << ",";
+    // os << data.vertex_y << ",";
+    // os << data.vertex_z << ",";
 
-    os << data.vertex_had[0][0] << ",";
-    os << data.vertex_had[0][1] << ",";
-    os << data.vertex_had[0][2] << ",";
+    // os << data.vertex_had[0][0] << ",";
+    // os << data.vertex_had[0][1] << ",";
+    // os << data.vertex_had[0][2] << ",";
 
-    os << data.vertex_had[1][0] << ",";
-    os << data.vertex_had[1][1] << ",";
-    os << data.vertex_had[1][2] << ",";
+    // os << data.vertex_had[1][0] << ",";
+    // os << data.vertex_had[1][1] << ",";
+    // os << data.vertex_had[1][2] << ",";
 
-    os << data.vertex_had[2][0] << ",";
-    os << data.vertex_had[2][1] << ",";
-    os << data.vertex_had[2][2] << ",";
+    // os << data.vertex_had[2][0] << ",";
+    // os << data.vertex_had[2][1] << ",";
+    // os << data.vertex_had[2][2] << ",";
 
     os << data.weight_gen<< ",";
 
     return os;
-  }
+  };
 };
 
 #endif
