@@ -16,11 +16,11 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
   // Get the number of events in this thread
   size_t num_of_events = (int)_chain->GetEntries();
 
-  float beam_energy = 22.0;
+  float beam_energy = 10.6;
   if (std::is_same<CutType, rga_Cuts>::value) {
-    beam_energy = 22.0;
+    beam_energy = 10.6;
   } else if (std::is_same<CutType, uconn_Cuts>::value) {
-    beam_energy = 22.0;
+    beam_energy = 10.6;
   }
 
   if (getenv("BEAM_E") != NULL) beam_energy = atof(getenv("BEAM_E"));
@@ -138,8 +138,10 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
       // if (event->W() > 1.25 && event->W() < 2.55 && event->Q2() > 1.5 && event->Q2() < 10.5) {
       // if (event->W() > 1.25 && event->W() < 2.55 && event->Q2() > 1.5 && event->Q2() < 30.0 && event->weight() > 0.0) {
         // if (event->W() > 1.25 && event->W() < 2.55 ) {
-        if (mc_event->W_mc() > 1.25 && mc_event->W_mc() < 2.55 && mc_event->Q2_mc() > 1.5 && mc_event->Q2_mc() < 30.0 &&
-            mc_event->weight() > 0.0) {
+    if (mc_event->W_mc() > 1.25 && mc_event->W_mc() < 2.55 && mc_event->Q2_mc() > 1.5 && mc_event->Q2_mc() < 10.5 &&
+        mc_event->weight() > 0.0) {
+      // if (mc_event->W_mc() > 1.25 && mc_event->W_mc() < 2.55 && mc_event->Q2_mc() > 1.5 && mc_event->Q2_mc() < 30.0 &&
+      //     mc_event->weight() > 0.0) {
         total_twopion_events++;
         // && abs(event->MM2_exclusive()) < 0.03 && abs(event->Energy_excl()) < 0.3) {
         //   //&&
@@ -239,7 +241,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<SyncFile>& _syn
         _sync->write(output);
       // }
     }
-  }
+    }
   std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
   // Return the total number of events
   std::cout << " total no of events = " << total << std::endl;
